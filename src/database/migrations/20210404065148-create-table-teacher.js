@@ -31,6 +31,16 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      institution_id: {
+        type: Sequelize.INTEGER,
+        allownull: true,
+        references: {
+          model: "institution",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      },
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,
@@ -46,3 +56,4 @@ module.exports = {
     queryInterface.dropTable("teacher");
   }
 };
+
