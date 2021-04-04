@@ -1,15 +1,16 @@
 const express = require("express");
 
+const teacherControllers = require("./controllers/teachers");
+const studentControllers = require("./controllers/students");
+
 const routes = express();
 
-const index = (req, res) => {
-    return res.send("foi")
-}
-const index2 = (req, res) => {
-    return res.send("foi de novo ")
-}
-routes.get("/", index);
 
-routes.get("/teste", index2);
+routes.get("/teacher", teacherControllers.index);
+routes.post("/teacher", teacherControllers.store);
+
+routes.get("/student", studentControllers.index);
+routes.get("/student/:id", studentControllers.find);
+routes.post("/student", studentControllers.store);
 
 module.exports = routes;
