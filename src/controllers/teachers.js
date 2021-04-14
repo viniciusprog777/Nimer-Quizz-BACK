@@ -1,3 +1,4 @@
+const Institution = require("../models/Institution");
 const Teacher = require("../models/Teacher");
 
 module.exports = {
@@ -19,14 +20,19 @@ module.exports = {
               email: email,
             }
         });
-        try {
-            if (teacher) return res.status(400).send({ error: "Usuario existente!" });
+        const institution = await Institution.findByPk(1);
 
-            teacher = await Teacher.create({
+        if (!institution)
+          return res.status(404).send({ error: "Instituição não encontrado!" });
+
+        if (teacher) return res.status(400).send({ error: "Usuario existente!" });
+        try {
+
+            teacher = await institution.createTeacher({
                 name,
                 email,
                 password,
-                date_birthday: dateBirthday
+                date_birthday: dateBirthday,
               });
 
               return res.status(201).send(teacher);

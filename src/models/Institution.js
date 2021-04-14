@@ -6,7 +6,7 @@ class Institution extends Model {
             {
                 name: DataTypes.STRING,
                 email: DataTypes.STRING,
-                password: DataTypes.STRING,
+                password: DataTypes.STRING
             },
             {
                 tableName: "institution",
