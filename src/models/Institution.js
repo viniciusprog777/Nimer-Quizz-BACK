@@ -4,9 +4,9 @@ class Institution extends Model {
     static init(sequelize){
         super.init(
             {
-                name: DataTypes.STRING,
-                email: DataTypes.STRING,
-                password: DataTypes.STRING
+                company_name: DataTypes.STRING,
+                cnpf: DataTypes.STRING,
+
             },
             {
                 tableName: "institution",

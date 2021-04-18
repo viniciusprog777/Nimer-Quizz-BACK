@@ -13,7 +13,7 @@ module.exports = {
           }
     },
     async store(req, res){
-        const {name, email, password} = req.body
+        const {name, email, password, company, cnpj} = req.body
 
         let institution = await Institution.findOne({
             where: {
@@ -25,10 +25,15 @@ module.exports = {
             if (institution) return res.status(400).send({ error: "Usuario existente!" });
            
             
-            institution = await Institution.create({
+            institution = await User.create({
                 name,
                 email,
-                password
+                password,
+                description: 1
+              });
+            await institution.createInstitution({
+                company_name: company,
+                cnpj
             });
             
             

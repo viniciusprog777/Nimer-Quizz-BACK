@@ -30,13 +30,18 @@ module.exports = {
 
         try {
 
-            student = await institution.createStudent({
-                name,
-                email,
-                password,
-                date_birthday: dateBirthday,
+          student = await User.create({
+            name,
+            email,
+            password,
+            description: 3
+          });
+        await student.addInstitution(institution);
 
-              });
+        await student.createStudent({
+          date_birthday: dateBirthday,
+
+        });
 
               return res.status(201).send(student);
 

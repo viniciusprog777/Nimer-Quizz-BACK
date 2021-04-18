@@ -1,5 +1,6 @@
 const Institution = require("../models/Institution");
 const Teacher = require("../models/Teacher");
+const User = require("../models/User")
 
 module.exports = {
     async index(req, res) {
@@ -28,12 +29,18 @@ module.exports = {
         if (teacher) return res.status(400).send({ error: "Usuario existente!" });
         try {
 
-            teacher = await institution.createTeacher({
+            teacher = await User.create({
                 name,
                 email,
                 password,
-                date_birthday: dateBirthday,
+                description: 2
               });
+            await teacher.addInstitution(institution);
+
+            await teacher.createTeacher({
+              date_birthday: dateBirthday,
+
+            });
 
               return res.status(201).send(teacher);
 

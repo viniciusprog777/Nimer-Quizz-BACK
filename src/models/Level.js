@@ -4,7 +4,7 @@ class Level extends Model {
     static init(sequelize){
         super.init(
             {
-                level: DataTypes.STRING
+                description: DataTypes.STRING
                 
             },
             {
