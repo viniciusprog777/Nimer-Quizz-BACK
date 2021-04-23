@@ -28,8 +28,13 @@ Class.associate(conex.models);
 Level.associate(conex.models);
 User.associate(conex.models);
 
-for (let assoc of Object.keys(User.associations)) {
-    for (let accessor of Object.keys(User.associations[assoc].accessors)) {
-        console.log(User.name + '.' + User.associations[assoc].accessors[accessor] + '()');
-    }
+for (let assoc of Object.keys(Teacher.associations)) {
+  for (let accessor of Object.keys(Teacher.associations[assoc].accessors)) {
+    console.log(
+      Teacher.name +
+        "." +
+        Teacher.associations[assoc].accessors[accessor] +
+        "()"
+    );
+  }
 }
