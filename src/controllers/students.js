@@ -27,11 +27,13 @@ module.exports = {
 
     if (student) return res.status(400).send({ error: "Usuario existente!" });
 
+    const passwordCript = bcrypt.hashSync(password);
+
     try {
       student = await User.create({
         name,
         email,
-        password,
+        password: passwordCript,
         description: 3,
       });
       await student.addInstitution(institution);

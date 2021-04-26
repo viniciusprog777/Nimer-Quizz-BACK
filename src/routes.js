@@ -1,5 +1,10 @@
 const express = require("express");
 
+const studentValidation = require("./validators/studentValidation");
+const teacherValidation = require("./validators/teacherValidation");
+const institutionValidation = require("./validators/instituionValidation");
+const classesValidation = require("./validators/classValidation");
+const courseValidation = require("./validators/courseValidation");
 const authMiddleware = require("./middleware/authorization");
 
 const teacherControllers = require("./controllers/teachers");
@@ -16,19 +21,23 @@ routes.post("/sessions", sessionsControllers.store);
 routes.use(authMiddleware);
 
 routes.get("/teacher", teacherControllers.index);
-routes.post("/teacher", teacherControllers.store);
+routes.post("/teacher", teacherValidation.create, teacherControllers.store);
 
 routes.get("/student", studentControllers.index);
 routes.get("/student/:id", studentControllers.find);
-routes.post("/student", studentControllers.store);
+routes.post("/student", studentValidation.create, studentControllers.store);
 
 routes.get("/institution", institutionControllers.index);
-routes.post("/institution", institutionControllers.store);
+routes.post(
+  "/institution",
+  institutionValidation.create,
+  institutionControllers.store
+);
 
 routes.get("/class", classesControllers.index);
-routes.post("/class", classesControllers.store);
+routes.post("/class", classesValidation.create, classesControllers.store);
 
 routes.get("/course", courseControllers.index);
-routes.post("/course", courseControllers.store);
+routes.post("/course", courseValidation.create, courseControllers.store);
 
 module.exports = routes;

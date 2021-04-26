@@ -1,6 +1,8 @@
 const Institution = require("../models/Institution");
 const Teacher = require("../models/Teacher");
 const User = require("../models/User");
+const bcrypt = require("bcryptjs");
+const { generateToken } = require("../util");
 
 module.exports = {
   async index(req, res) {
@@ -27,11 +29,14 @@ module.exports = {
       return res.status(404).send({ error: "Instituição não encontrado!" });
 
     if (teacher) return res.status(400).send({ error: "Usuario existente!" });
+
+    const passwordCript = bcrypt.hashSync(password);
+
     try {
       teacher = await User.create({
         name,
         email,
-        password,
+        password: passwordCript,
         description: 2,
       });
       await teacher.addInstitution(institution);
