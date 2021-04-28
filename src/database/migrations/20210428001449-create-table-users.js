@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    queryInterface.createTable("teacher", {
+    queryInterface.createTable("users", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -21,40 +21,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      universityDegreeNumber: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      cpf: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      adress: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      image: {
-        type: Sequelize.STRING,
-      },
-      date_birthday: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      user_id: {
+      userlevel_id: {
         type: Sequelize.INTEGER,
         allownull: true,
         references: {
-          model: "users",
-          key: "id",
-        },
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
-      },
-      institution_id: {
-        type: Sequelize.INTEGER,
-        allownull: true,
-        references: {
-          model: "institution",
+          model: "user_level",
           key: "id",
         },
         onDelete: "CASCADE",
@@ -72,6 +43,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    queryInterface.dropTable("teacher");
+    queryInterface.dropTable("users");
   },
 };

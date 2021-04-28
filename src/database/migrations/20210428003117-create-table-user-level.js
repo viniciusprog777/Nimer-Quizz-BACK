@@ -2,17 +2,13 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    queryInterface.createTable("institution", {
+    queryInterface.createTable("user_level", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      cnpj: {
+      description: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -28,6 +24,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    queryInterface.dropTable("institution");
+    queryInterface.dropTable("user_level");
   },
 };
