@@ -8,11 +8,11 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true,
       },
-      name: {
+      cnpj: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      cnpj: {
+      company_name: {
         type: Sequelize.STRING,
         allowNull: false,
       },

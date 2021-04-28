@@ -8,6 +8,10 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true,
       },
+      date_birthday: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       institution_id: {
         type: Sequelize.INTEGER,
         allownull: true,
