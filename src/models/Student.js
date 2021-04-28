@@ -4,10 +4,6 @@ class Student extends Model {
     static init(sequelize){
         super.init(
             {
-                name: DataTypes.STRING,
-                email: DataTypes.STRING,
-                password: DataTypes.STRING,
-                image: DataTypes.STRING,
                 date_birthday: DataTypes.STRING
             },
             {
@@ -18,6 +14,7 @@ class Student extends Model {
     }
     static associate(models){
         this.belongsTo(models.Institution, { foreignKey: "institution_id"});
+        this.belongsTo(models.User, { foreignKey: "user_id"});
         this.belongsToMany(models.Class, { through: "class_student"});
     }
 }
