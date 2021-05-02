@@ -16,6 +16,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      insignia:{
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       institution_id: {
         type: Sequelize.INTEGER,
         allownull: true,

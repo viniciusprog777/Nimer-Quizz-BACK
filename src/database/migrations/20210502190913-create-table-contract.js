@@ -1,38 +1,32 @@
-"use strict";
+'use strict';
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    queryInterface.createTable("user", {
+    queryInterface.createTable("contract", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      name: {
+      contract_number:{
         type: Sequelize.STRING,
         allowNull: false,
+        unique: true
       },
-      email: {
+      card_number: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
+        unique: true
       },
-      password: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      image: {
-        type: Sequelize.STRING,
-      },
-      status: {
+      status_contract: {
         type: Sequelize.BOOLEAN,
         allowNull: false
       },
-      level_id: {
+      institution_id: {
         type: Sequelize.INTEGER,
         allownull: true,
         references: {
-          model: "level",
+          model: "institution",
           key: "id",
         },
         onDelete: "CASCADE",
@@ -50,6 +44,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    queryInterface.dropTable("user");
-  },
+    queryInterface.dropTable("contract");
+  }
 };

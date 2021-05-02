@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    queryInterface.createTable("question", {
+    queryInterface.createTable("answer", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -11,6 +11,13 @@ module.exports = {
       description: {
         type: Sequelize.STRING,
         allowNull: false,
+      },
+      image: {
+        type: Sequelize.STRING,
+      },
+      correct_option:{
+        type: Sequelize.BOOLEAN,
+        allowNull: false
       },
       question_id: {
         type: Sequelize.INTEGER,
@@ -34,6 +41,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    queryInterface.dropTable("question");
+    queryInterface.dropTable("answer");
   },
 };

@@ -12,6 +12,9 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      image: {
+        type: Sequelize.STRING,
+      },
       course_id: {
         type: Sequelize.INTEGER,
         allownull: true,

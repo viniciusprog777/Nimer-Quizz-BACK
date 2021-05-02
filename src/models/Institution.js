@@ -16,6 +16,8 @@ class Institution extends Model {
     }
     static associate(models){
         this.belongsTo(models.User, { foreignKey: "user_id"});
+        this.hasOne(models.Theme, { foreignKey: "institution_id"});
+        this.hasMany(models.Contract, { foreignKey: "institution_id"});
         this.hasMany(models.Teacher, { foreignKey: "institution_id"});
         this.hasMany(models.Student, { foreignKey: "institution_id"});
         this.hasMany(models.Course, { foreignKey: "institution_id"});

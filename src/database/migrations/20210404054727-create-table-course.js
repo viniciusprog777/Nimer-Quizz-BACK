@@ -15,6 +15,9 @@ module.exports = {
       description:{
         type: Sequelize.STRING
       },
+      image: {
+        type: Sequelize.STRING,
+      },
       institution_id: {
         type: Sequelize.INTEGER,
         allownull: true,

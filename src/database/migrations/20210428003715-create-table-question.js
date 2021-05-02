@@ -8,9 +8,12 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true,
       },
-      name: {
+      title: {
         type: Sequelize.STRING,
         allowNull: false,
+      },
+      image: {
+        type: Sequelize.STRING,
       },
       teacher_id: {
         type: Sequelize.INTEGER,

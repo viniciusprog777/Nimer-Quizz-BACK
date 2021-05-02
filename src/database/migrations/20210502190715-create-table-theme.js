@@ -1,38 +1,33 @@
-"use strict";
+'use strict';
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    queryInterface.createTable("user", {
+    queryInterface.createTable("theme", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      password: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      image: {
+      logo_institution:{
         type: Sequelize.STRING,
       },
-      status: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false
+      color_primary: {
+        type: Sequelize.STRING,
       },
-      level_id: {
+      color_primary_dark:{
+        type: Sequelize.STRING,
+      },
+      color_secundary: {
+        type: Sequelize.STRING,
+      },
+      color_secundary_dark: {
+        type: Sequelize.STRING
+      },
+      institution_id: {
         type: Sequelize.INTEGER,
         allownull: true,
         references: {
-          model: "level",
+          model: "institution",
           key: "id",
         },
         onDelete: "CASCADE",
@@ -50,6 +45,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    queryInterface.dropTable("user");
-  },
+    queryInterface.dropTable("theme");
+  }
 };

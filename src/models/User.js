@@ -18,9 +18,9 @@ class User extends Model {
     }
     static associate(models){
         this.belongsTo(models.Level, { foreignKey: "level_id"});
-        this.hasMany(models.Institution, { foreignKey: "user_id"});
-        this.hasMany(models.Teacher, { foreignKey: "user_id"});
-        this.hasMany(models.Student, { foreignKey: "user_id"});
+        this.hasOne(models.Institution, { foreignKey: "user_id"});
+        this.hasOne(models.Teacher, { foreignKey: "user_id"});
+        this.hasOne(models.Student, { foreignKey: "user_id"});
     }
 }
 module.exports = User;
