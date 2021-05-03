@@ -1,32 +1,32 @@
-'use strict';
+"use strict";
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    queryInterface.createTable("contract", {
+    queryInterface.createTable("student", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      contract_number:{
+      date_birthday: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true
-      },
-      card_number: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
-      },
-      status_contract: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false
       },
       institution_id: {
         type: Sequelize.INTEGER,
         allownull: true,
         references: {
           model: "institution",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      },
+      user_id: {
+        type: Sequelize.INTEGER,
+        allownull: true,
+        references: {
+          model: "user",
           key: "id",
         },
         onDelete: "CASCADE",
@@ -44,6 +44,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    queryInterface.dropTable("contract");
-  }
+    queryInterface.dropTable("student");
+  },
 };

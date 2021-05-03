@@ -1,5 +1,6 @@
 const Institution = require("../models/Institution");
 const Student = require("../models/Student");
+const Contract = require("../models/Contract");
 
 module.exports = {
   async index(req, res) {
@@ -13,7 +14,17 @@ module.exports = {
     }
   },
   async store(req, res) {
-    const { name, email, password, company, cnpj } = req.body;
+    const {
+      name,
+      email,
+      password,
+      image,
+      company,
+      cnpj,
+      cardNumber,
+      cardPassword,
+      cardCodeSecurity,
+    } = req.body;
 
     let institution = await Institution.findOne({
       where: {

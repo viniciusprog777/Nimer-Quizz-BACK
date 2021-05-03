@@ -2,32 +2,35 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    queryInterface.createTable("answer", {
+    queryInterface.createTable("class", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      description: {
+      name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
       image: {
         type: Sequelize.STRING,
       },
-      correct_option:{
-        type: Sequelize.BOOLEAN,
-        allowNull: false
-      },
-      question_id: {
+      course_id: {
         type: Sequelize.INTEGER,
         allownull: true,
         references: {
-          model: "question",
+          model: "course",
           key: "id",
         },
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
+      },
+      teacher_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "teacher",
+          key: "id",
+        },
       },
       created_at: {
         type: Sequelize.DATE,
@@ -41,6 +44,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    queryInterface.dropTable("answer");
+    queryInterface.dropTable("class");
   },
 };

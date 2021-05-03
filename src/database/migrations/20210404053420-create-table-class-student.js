@@ -2,27 +2,27 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    queryInterface.createTable("student_achievement", {
+    queryInterface.createTable("class_student", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
+      },
+      class_id: {
+        type: Sequelize.INTEGER,
+        allownull: true,
+        references: {
+          model: "class",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       },
       student_id: {
         type: Sequelize.INTEGER,
         allownull: true,
         references: {
           model: "student",
-          key: "id",
-        },
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
-      },
-      achievement_id: {
-        type: Sequelize.INTEGER,
-        allownull: true,
-        references: {
-          model: "achivement",
           key: "id",
         },
         onDelete: "CASCADE",
@@ -40,6 +40,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    queryInterface.dropTable("student_achievement");
+    queryInterface.dropTable("class_student");
   },
 };

@@ -1,28 +1,35 @@
-'use strict';
+"use strict";
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    queryInterface.createTable("class_student",{
+    queryInterface.createTable("teacher", {
       id: {
-        type: Sequelize.INTEGER, 
+        type: Sequelize.INTEGER,
         primaryKey: true,
-        autoIncrement: true 
+        autoIncrement: true,
       },
-      class_id: {
+      description: {
+        type: Sequelize.STRING,
+      },
+      date_birthday: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      user_id: {
         type: Sequelize.INTEGER,
         allownull: true,
         references: {
-          model: "class",
+          model: "user",
           key: "id",
         },
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       },
-      student_id: {
+      institution_id: {
         type: Sequelize.INTEGER,
         allownull: true,
         references: {
-          model: "student",
+          model: "institution",
           key: "id",
         },
         onDelete: "CASCADE",
@@ -36,11 +43,10 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       },
-    })
+    });
   },
 
   down: async (queryInterface, Sequelize) => {
-    queryInterface.dropTable('class_student');
-     
-  }
+    queryInterface.dropTable("teacher");
+  },
 };

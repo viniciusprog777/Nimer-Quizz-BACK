@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    queryInterface.createTable("achievement", {
+    queryInterface.createTable("user", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -12,29 +12,27 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      description: {
+      email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      password: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      insignia:{
+      image: {
         type: Sequelize.STRING,
+      },
+      status: {
+        type: Sequelize.BOOLEAN,
         allowNull: false,
       },
-      institution_id: {
+      level_id: {
         type: Sequelize.INTEGER,
         allownull: true,
         references: {
-          model: "institution",
-          key: "id",
-        },
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
-      },
-      course_id: {
-        type: Sequelize.INTEGER,
-        allownull: true,
-        references: {
-          model: "course",
+          model: "level",
           key: "id",
         },
         onDelete: "CASCADE",
@@ -52,6 +50,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    queryInterface.dropTable("achievement");
+    queryInterface.dropTable("user");
   },
 };

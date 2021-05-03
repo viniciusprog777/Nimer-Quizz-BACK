@@ -1,33 +1,28 @@
-'use strict';
+"use strict";
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    queryInterface.createTable("theme", {
+    queryInterface.createTable("student_achievement", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      logo_institution:{
-        type: Sequelize.STRING,
-      },
-      color_primary: {
-        type: Sequelize.STRING,
-      },
-      color_primary_dark:{
-        type: Sequelize.STRING,
-      },
-      color_secundary: {
-        type: Sequelize.STRING,
-      },
-      color_secundary_dark: {
-        type: Sequelize.STRING
-      },
-      institution_id: {
+      student_id: {
         type: Sequelize.INTEGER,
         allownull: true,
         references: {
-          model: "institution",
+          model: "student",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      },
+      achievement_id: {
+        type: Sequelize.INTEGER,
+        allownull: true,
+        references: {
+          model: "achievement",
           key: "id",
         },
         onDelete: "CASCADE",
@@ -45,6 +40,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    queryInterface.dropTable("theme");
-  }
+    queryInterface.dropTable("student_achievement");
+  },
 };
