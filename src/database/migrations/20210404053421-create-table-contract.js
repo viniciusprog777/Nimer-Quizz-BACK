@@ -18,6 +18,11 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
+      card_code: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+      },
       status_contract: {
         type: Sequelize.BOOLEAN,
         allowNull: false,

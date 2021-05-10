@@ -42,6 +42,7 @@ module.exports = {
         name,
         email,
         password: passwordCript,
+        image,
         description: 1,
       });
       await institution.createInstitution({

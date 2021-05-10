@@ -46,13 +46,10 @@ Contract.associate(conex.models);
 Question.associate(conex.models);
 Quizz.associate(conex.models);
 
-for (let assoc of Object.keys(Teacher.associations)) {
-  for (let accessor of Object.keys(Teacher.associations[assoc].accessors)) {
+for (let assoc of Object.keys(User.associations)) {
+  for (let accessor of Object.keys(User.associations[assoc].accessors)) {
     console.log(
-      Teacher.name +
-        "." +
-        Teacher.associations[assoc].accessors[accessor] +
-        "()"
+      User.name + "." + User.associations[assoc].accessors[accessor] + "()"
     );
   }
 }
