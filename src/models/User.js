@@ -8,6 +8,7 @@ class User extends Model {
         email: DataTypes.STRING,
         password: DataTypes.STRING,
         image: DataTypes.STRING,
+        status: DataTypes.BOOLEAN,
       },
       {
         tableName: "user",

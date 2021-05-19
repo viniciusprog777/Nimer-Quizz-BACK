@@ -5,7 +5,7 @@ class Institution extends Model {
     super.init(
       {
         company_name: DataTypes.STRING,
-        cnpf: DataTypes.STRING,
+        cnpj: DataTypes.STRING,
       },
       {
         tableName: "institution",

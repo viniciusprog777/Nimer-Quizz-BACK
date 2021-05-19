@@ -17,6 +17,8 @@ class Student extends Model {
     this.belongsTo(models.User, { foreignKey: "user_id" });
     this.belongsToMany(models.Class, { through: "class_student" });
     this.belongsToMany(models.Achievement, { through: "student_achievement" });
+    this.belongsToMany(models.Option, { through: "answer" });
+
   }
 }
 module.exports = Student;

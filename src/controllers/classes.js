@@ -1,5 +1,6 @@
 const Class = require("../models/Class");
 const Teacher = require("../models/Teacher");
+const User = require("../models/User");
 
 module.exports = {
   async index(req, res) {
@@ -13,14 +14,15 @@ module.exports = {
     }
   },
   async store(req, res) {
-    const { name } = req.body;
+    const { name, image } = req.body;
+    const { userId, userLevel } = req;
 
     let classes = await Class.findOne({
       where: {
         name,
       },
     });
-    const teacher = await Teacher.findByPk(1);
+    const teacher = await User.findByPk(userId);
 
     if (!teacher)
       return res.status(404).send({ error: "Professor não encontrado!" });
@@ -29,6 +31,7 @@ module.exports = {
     try {
       classes = await teacher.createClass({
         name,
+        image
       });
 
       return res.status(201).send(classes);

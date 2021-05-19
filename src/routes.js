@@ -17,6 +17,11 @@ const courseControllers = require("./controllers/courses");
 const routes = express();
 
 routes.post("/sessions", sessionsControllers.store);
+routes.post(
+  "/institution",
+  //institutionValidation.create,
+  institutionControllers.store
+);
 
 routes.use(authMiddleware);
 
@@ -28,11 +33,7 @@ routes.get("/student/:id", studentControllers.find);
 routes.post("/student", studentValidation.create, studentControllers.store);
 
 routes.get("/institution", institutionControllers.index);
-routes.post(
-  "/institution",
-  institutionValidation.create,
-  institutionControllers.store
-);
+
 
 routes.get("/class", classesControllers.index);
 routes.post("/class", classesValidation.create, classesControllers.store);

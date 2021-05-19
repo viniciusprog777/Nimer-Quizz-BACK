@@ -14,15 +14,16 @@ module.exports = {
   },
   async store(req, res) {
     const { name, email, password, dateBirthday } = req.body;
+    const { userId, userLevel } = req;
 
     let student = await Student.findOne({
       where: {
         email: email,
       },
     });
-    const institution = await Institution.findByPk(1);
+    const institution = await User.findByPk(userId);
 
-    if (!institution)
+    if (!institution || userLevel !== 1 || institution.status === 0)
       return res.status(404).send({ error: "Instituição não encontrado!" });
 
     if (student) return res.status(400).send({ error: "Usuario existente!" });
@@ -34,13 +35,14 @@ module.exports = {
         name,
         email,
         password: passwordCript,
-        description: 3,
+        status: 1
       });
       await student.addInstitution(institution);
 
       await student.createStudent({
         date_birthday: dateBirthday,
       });
+      await student.getLevel(3)
 
       return res.status(201).send(student);
     } catch (error) {

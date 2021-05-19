@@ -6,6 +6,8 @@ class Contract extends Model {
       {
         contract_number: DataTypes.STRING,
         card_number: DataTypes.STRING,
+        card_code: DataTypes.STRING,
+        status_contract: DataTypes.BOOLEAN
       },
       {
         tableName: "contract",

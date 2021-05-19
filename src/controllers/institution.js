@@ -1,6 +1,9 @@
 const Institution = require("../models/Institution");
 const Student = require("../models/Student");
 const Contract = require("../models/Contract");
+const User = require("../models/User");
+const bcrypt = require("bcryptjs");
+
 
 module.exports = {
   async index(req, res) {
@@ -26,7 +29,7 @@ module.exports = {
       cardCodeSecurity,
     } = req.body;
 
-    let institution = await Institution.findOne({
+    let institution = await User.findOne({
       where: {
         email: email,
       },
@@ -43,12 +46,27 @@ module.exports = {
         email,
         password: passwordCript,
         image,
-        description: 1,
+        status: 1
       });
       await institution.createInstitution({
         company_name: company,
-        cnpj,
+        cnpj: cnpj,
       });
+      await institution.getLevel(1)
+      
+      institution = await User.findOne({
+        where: {
+          email: email,
+        },
+      });
+      
+      contract = await institution.createContract({
+        contract_number: "12123-21213",
+        card_number: cardNumber,
+        card_code: cardCodeSecurity,
+        status_contract: 1
+      })
+      
 
       return res.status(201).send(institution);
     } catch (error) {

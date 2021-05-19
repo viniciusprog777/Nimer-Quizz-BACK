@@ -17,15 +17,16 @@ module.exports = {
   },
   async store(req, res) {
     const { name, email, password, dateBirthday } = req.body;
+    const { userId, userLevel } = req;
 
     let teacher = await Teacher.findOne({
       where: {
         email: email,
       },
     });
-    const institution = await Institution.findByPk(1);
+    const institution = await User.findByPk(userId);
 
-    if (!institution)
+    if (!institution || userLevel !== 1 || institution.status === 0)
       return res.status(404).send({ error: "Instituição não encontrado!" });
 
     if (teacher) return res.status(400).send({ error: "Usuario existente!" });
@@ -37,13 +38,14 @@ module.exports = {
         name,
         email,
         password: passwordCript,
-        description: 2,
+        status: 1
       });
       await teacher.addInstitution(institution);
 
       await teacher.createTeacher({
         date_birthday: dateBirthday,
       });
+      await teacher.getLevel(2)
 
       return res.status(201).send(teacher);
     } catch (error) {
