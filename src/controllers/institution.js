@@ -4,7 +4,6 @@ const Contract = require("../models/Contract");
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 
-
 module.exports = {
   async index(req, res) {
     try {
@@ -46,29 +45,32 @@ module.exports = {
         email,
         password: passwordCript,
         image,
-        status: 1
+        status: 1,
       });
       await institution.createInstitution({
         company_name: company,
         cnpj: cnpj,
       });
-      await institution.getLevel(1)
-      
-      institution = await User.findOne({
+      await institution.getLevel(1);
+
+      let institution02 = await Institution.findOne({
         where: {
-          email: email,
+          user_id: institution.id,
         },
       });
-      
-      contract = await institution.createContract({
+
+      let contract = await institution02.createContract({
         contract_number: "12123-21213",
         card_number: cardNumber,
         card_code: cardCodeSecurity,
-        status_contract: 1
-      })
-      
+        status_contract: 1,
+      });
 
-      return res.status(201).send(institution);
+      return res.status(201).send({
+        institution,
+        institution02,
+        contract,
+      });
     } catch (error) {
       return res.status(500).send(error);
     }
