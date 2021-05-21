@@ -1,4 +1,5 @@
 const Class = require("../models/Class");
+const Course = require("../models/Course");
 const Teacher = require("../models/Teacher");
 const User = require("../models/User");
 
@@ -16,15 +17,24 @@ module.exports = {
   async store(req, res) {
     const { name, image } = req.body;
     const { userId, userLevel } = req;
+    const courseId = req.params.id;
 
     let classes = await Class.findOne({
       where: {
         name,
       },
     });
-    const teacher = await User.findByPk(userId);
+    const teacher = await Teacher.findOne({
+      where:{
+        user_id: userId
+      }
+    });
+    const course = await Course.findByPk(courseId);
+    
+   
 
-    if (!teacher)
+
+    if (!teacher || userLevel > 2)
       return res.status(404).send({ error: "Professor não encontrado!" });
 
     if (classes) return res.status(400).send({ error: "Classe já existe!" });
@@ -33,6 +43,7 @@ module.exports = {
         name,
         image
       });
+      await course.addClass(classes)
 
       return res.status(201).send(classes);
     } catch (error) {

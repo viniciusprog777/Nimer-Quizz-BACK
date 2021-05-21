@@ -3,6 +3,7 @@ const Teacher = require("../models/Teacher");
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const { generateToken } = require("../util");
+const Level = require("../models/Level");
 
 module.exports = {
   async index(req, res) {
@@ -19,34 +20,48 @@ module.exports = {
     const { name, email, password, dateBirthday } = req.body;
     const { userId, userLevel } = req;
 
-    let teacher = await Teacher.findOne({
+    let user = await User.findOne({
       where: {
         email: email,
       },
     });
-    const institution = await User.findByPk(userId);
+    const level = await Level.findByPk(2);
 
-    if (!institution || userLevel !== 1 || institution.status === 0)
+    const institution = await Institution.findOne({
+      where:{
+        user_id: userId
+      }
+    });
+    
+
+    if (!institution || userLevel > 1)
       return res.status(404).send({ error: "Instituição não encontrado!" });
 
-    if (teacher) return res.status(400).send({ error: "Usuario existente!" });
+    if (user) return res.status(400).send({ error: "Usuario existente!" });
 
     const passwordCript = bcrypt.hashSync(password);
 
     try {
-      teacher = await User.create({
+      user = await level.createUser({
         name,
         email,
         password: passwordCript,
         status: 1
       });
-      await teacher.addInstitution(institution);
-
-      await teacher.createTeacher({
+      
+      await user.createTeacher({
         date_birthday: dateBirthday,
       });
-      await teacher.getLevel(2)
 
+      let teacher = await Teacher.findOne({
+        where: {
+          user_id: user.id,
+        },
+      });
+      await institution.addTeacher(teacher);     
+      
+
+      
       return res.status(201).send(teacher);
     } catch (error) {
       return res.status(500).send(error);

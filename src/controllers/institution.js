@@ -1,13 +1,32 @@
 const Institution = require("../models/Institution");
 const Student = require("../models/Student");
 const Contract = require("../models/Contract");
+const Level = require("../models/Level");
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 
 module.exports = {
   async index(req, res) {
     try {
-      const institutions = await Institution.findAll();
+      const institutions = await User.findAll({
+        order: [["created_at", "DESC"]],
+        where:{
+          level_id: 1,
+        },
+        attributes: [
+          "id",
+          "name",
+          "email",
+          "image",
+          "created_at",
+        ],
+        include: [
+          {
+            association: "Institution",
+            attributes: ["id", "cnpj", "company_name"],
+          },
+        ]
+        });
 
       res.status(200).send(institutions);
     } catch (error) {
@@ -28,47 +47,48 @@ module.exports = {
       cardCodeSecurity,
     } = req.body;
 
-    let institution = await User.findOne({
+    let user = await User.findOne({
       where: {
         email: email,
       },
     });
+    
+    const level = await Level.findByPk(1);
 
     try {
-      if (institution)
+      if (user)
         return res.status(400).send({ error: "Usuario existente!" });
 
       const passwordCript = bcrypt.hashSync(password);
 
-      institution = await User.create({
+      user = await level.createUser({
         name,
         email,
         password: passwordCript,
         image,
         status: 1,
       });
-      await institution.createInstitution({
+      await user.createInstitution({
         company_name: company,
         cnpj: cnpj,
       });
-      await institution.getLevel(1);
 
-      let institution02 = await Institution.findOne({
+      let institution = await Institution.findOne({
         where: {
-          user_id: institution.id,
+          user_id: user.id,
         },
       });
 
-      let contract = await institution02.createContract({
-        contract_number: "12123-21213",
+      const contract = await institution.createContract({
+        contract_number: "12124-21213",
         card_number: cardNumber,
         card_code: cardCodeSecurity,
         status_contract: 1,
       });
 
       return res.status(201).send({
+        user,
         institution,
-        institution02,
         contract,
       });
     } catch (error) {

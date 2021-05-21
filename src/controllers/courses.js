@@ -1,6 +1,5 @@
 const Course = require("../models/Course");
 const Institution = require("../models/Institution");
-const User = require("../models/User");
 
 module.exports = {
   async index(req, res) {
@@ -22,9 +21,13 @@ module.exports = {
         name,
       },
     });
-    const institution = await User.findByPk(userId);
+    const institution = await Institution.findOne({
+      where:{
+        user_id: userId
+      }
+    });
 
-    if (!institution || userLevel !== 1 || institution.status === 0)
+    if (!institution || userLevel > 1)
       return res.status(404).send({ error: "Instituição não encontrado!" });
 
     if (course) return res.status(400).send({ error: "Curso já existe!" });
