@@ -12,14 +12,19 @@ module.exports = {
           email,
         },
       });
-      if (!user || !bcrypt.compareSync(password, user.password) || user.status === 0)
+      if (
+        !user ||
+        !bcrypt.compareSync(password, user.password) ||
+        user.status === 0
+      )
         return res.status(403).send({ error: "Usuário e/ou senha inválidos" });
-
+      console.log("1");
       const token = generateToken({
         userId: user.id,
         userLevel: user.level_id,
-        userEmail: user.email
+        userEmail: user.email,
       });
+      console.log(token);
       res.status(201).send({
         user: {
           userId: user.id,

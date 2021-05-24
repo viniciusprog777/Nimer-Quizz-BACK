@@ -13,8 +13,8 @@ const institutionControllers = require("./controllers/institution");
 const sessionsControllers = require("./controllers/sessions");
 const classesControllers = require("./controllers/classes");
 const courseControllers = require("./controllers/courses");
-const classStudentControllers = require("./controllers/classStudent")
-const courseStudentControllers = require("./controllers/courseStudent")
+const classStudentControllers = require("./controllers/classStudent");
+const courseStudentControllers = require("./controllers/courseStudent");
 
 const routes = express();
 
@@ -23,34 +23,42 @@ routes.post(
   "/institution",
   //institutionValidation.create,
   institutionControllers.store
-  );
+);
 routes.get("/institution", institutionControllers.index);
 
 routes.use(authMiddleware);
 
 routes.get("/teacher", teacherControllers.index);
-routes.post("/teacher", 
+routes.post(
+  "/teacher",
   //teacherValidation.create,
-  teacherControllers.store);
+  teacherControllers.store
+);
 
 routes.get("/student", studentControllers.index);
 routes.get("/student/:id", studentControllers.find);
-routes.post("/student",
+routes.post(
+  "/student",
   //studentValidation.create,
-  studentControllers.store);
-
-
+  studentControllers.store
+);
 
 routes.get("/class", classesControllers.index);
-routes.post("/class/:id",
-  //classesValidation.create, 
-  classesControllers.store);
-routes.post("/class/:id/student", classStudentControllers.index);
+routes.post(
+  "/class/:id",
+  //classesValidation.create,
+  classesControllers.store
+);
+
+routes.post("/class/:id/student", classStudentControllers.store);
+routes.get("/class/student", classStudentControllers.index);
 
 routes.get("/course", courseControllers.index);
-routes.post("/course",
-//courseValidation.create,
-courseControllers.store);
+routes.post(
+  "/course",
+  //courseValidation.create,
+  courseControllers.store
+);
 routes.post("/course/:id/student", courseStudentControllers.index);
 
 module.exports = routes;
