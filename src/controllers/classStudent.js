@@ -7,7 +7,10 @@ module.exports = {
     const { userId } = req;
 
     try {
-      const student = await Student.findByPk(userId, {
+      const student = await Student.findOne({
+        where:{
+          user_id: userId
+        },
         include: [
           {
             association: "Classes",
@@ -48,4 +51,6 @@ module.exports = {
       res.status(500).send({ error });
     }
   },
+
 };
+

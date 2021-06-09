@@ -25,7 +25,6 @@ routes.post(
   institutionControllers.store
 );
 routes.get("/institution", institutionControllers.index);
-
 routes.use(authMiddleware);
 
 routes.get("/teacher", teacherControllers.index);
@@ -59,6 +58,7 @@ routes.post(
   //courseValidation.create,
   courseControllers.store
 );
-routes.post("/course/:id/student", courseStudentControllers.index);
+routes.get("/course/student", courseStudentControllers.index);
+routes.post("/course/:id/student", courseStudentControllers.store);
 
 module.exports = routes;
