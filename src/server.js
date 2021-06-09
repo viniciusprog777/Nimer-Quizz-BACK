@@ -1,7 +1,7 @@
-const app = require("./app");
+const { httpServer } = require("./app");
 
 const port = 3333;
 
-app.listen(port, () => {
+httpServer.listen(port, () => {
   console.log(`Servidor Rodando na porta ${port}`);
 });

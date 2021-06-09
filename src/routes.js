@@ -25,7 +25,7 @@ routes.post(
   institutionControllers.store
 );
 routes.get("/institution", institutionControllers.index);
-routes.use(authMiddleware);
+// routes.use(authMiddleware);
 
 routes.get("/teacher", teacherControllers.index);
 routes.post(
