@@ -21,13 +21,13 @@ module.exports = {
             
             if (!question) return res.status(400).send({ error: "Questão não encontrada!" });
 
-            const option = question.addOption({
+            const choice = question.addChoice({
                 description,
                 image,
                 correct_option: correctOption
             });
 
-            return res.status(201).send(option);
+            return res.status(201).send(choice);
 
         } catch (error) {
             console.log(error);

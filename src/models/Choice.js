@@ -1,6 +1,6 @@
 const { Model, DataTypes } = require("sequelize");
 
-class Option extends Model {
+class Choice extends Model {
   static init(sequelize) {
     super.init(
       {
@@ -8,7 +8,7 @@ class Option extends Model {
         image: DataTypes.STRING,
       },
       {
-        tableName: "option",
+        tableName: "choice",
         sequelize,
       }
     );
@@ -18,4 +18,4 @@ class Option extends Model {
     this.belongsToMany(models.Student, { through: "answer" });
   }
 }
-module.exports = Option;
+module.exports = Choice;

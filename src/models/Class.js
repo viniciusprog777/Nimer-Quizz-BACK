@@ -14,6 +14,7 @@ class Class extends Model {
     );
   }
   static associate(models) {
+    this.hasMany(models.Quizz, { foreignKey: "class_id"})
     this.belongsTo(models.Teacher, { foreignKey: "teacher_id" });
     this.belongsTo(models.Course, { foreignKey: "course_id" });
     this.belongsToMany(models.Student, { through: "class_student" });

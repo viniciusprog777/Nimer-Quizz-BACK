@@ -19,6 +19,13 @@
       document.querySelector("#teste").addEventListener("click", () => {
         if (!socket) {
           socket = new io("http://localhost:3333");
+          socket.emit("prepareQuizz", {
+            userId: 2,
+            userLevel: 2,
+            title: "Quizz Teste 03",
+            classId: 2
+          });
+
         }
 
         socket.on("comecar", (mensagem) => {

@@ -18,11 +18,11 @@ module.exports = {
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       },
-      option_id: {
+      choice_id: {
         type: Sequelize.INTEGER,
         allownull: true,
         references: {
-          model: "option",
+          model: "choice",
           key: "id",
         },
         onDelete: "CASCADE",
