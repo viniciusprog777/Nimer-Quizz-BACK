@@ -14,7 +14,10 @@ module.exports = {
       },
       status_quizz: {
         type: Sequelize.STRING,
-        allowNull: null
+        allowNull: true,
+      },
+      socket_id: {
+        type: Sequelize.STRING,
       },
       class_id: {
         type: Sequelize.INTEGER,

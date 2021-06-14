@@ -2,36 +2,36 @@ const Question = require("../models/Question");
 const Teacher = require("../models/Teacher");
 
 module.exports = {
-    async store(req, res){
-        const { userId, userLevel } = req;
-        const { description, image, correctOption } = req.body;
-        const questionId = req.params.id;
+  async store(req, res) {
+    const { userId, userLevel } = req;
+    const { description, image, correctOption } = req.body;
+    const questionId = req.params.id;
 
-        let question = await Question.findByPk(questionId);
+    let question = await Question.findByPk(questionId);
 
-        const teacher = await Teacher.findOne({
-            where:{
-                user_id: userId
-            }
-        })
+    const teacher = await Teacher.findOne({
+      where: {
+        user_id: userId,
+      },
+    });
 
-        try {
-            if (!teacher || userLevel > 2)
-                return res.status(404).send({ error: "Professor não encontrado!" });
-            
-            if (!question) return res.status(400).send({ error: "Questão não encontrada!" });
+    try {
+      if (!teacher || userLevel > 2)
+        return res.status(404).send({ error: "Professor não encontrado!" });
 
-            const choice = question.addChoice({
-                description,
-                image,
-                correct_option: correctOption
-            });
+      if (!question)
+        return res.status(400).send({ error: "Questão não encontrada!" });
 
-            return res.status(201).send(choice);
+      const choice = question.addChoice({
+        description,
+        image,
+        correct_option: correctOption,
+      });
 
-        } catch (error) {
-            console.log(error);
-            res.status(500).send({ error });
-        }
+      return res.status(201).send(choice);
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({ error });
     }
-}
+  },
+};
