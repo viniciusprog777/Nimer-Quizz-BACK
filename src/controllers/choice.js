@@ -22,7 +22,7 @@ module.exports = {
       if (!question)
         return res.status(400).send({ error: "Questão não encontrada!" });
 
-      const choice = question.addChoice({
+      const choice = await question.createChoice({
         description,
         image,
         correct_option: correctOption,
