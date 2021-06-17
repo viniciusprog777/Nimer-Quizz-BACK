@@ -10,6 +10,8 @@ const authMiddleware = require("./middleware/authorization");
 const teacherControllers = require("./controllers/teachers");
 const studentControllers = require("./controllers/students");
 const institutionControllers = require("./controllers/institution");
+const questionControllers = require("./controllers/question");
+const choiceControllers = require("./controllers/choice");
 const sessionsControllers = require("./controllers/sessions");
 const classesControllers = require("./controllers/classes");
 const courseControllers = require("./controllers/courses");
@@ -25,7 +27,7 @@ routes.post(
   institutionControllers.store
 );
 routes.get("/institution", institutionControllers.index);
-// routes.use(authMiddleware);
+routes.use(authMiddleware);
 
 routes.get("/teacher", teacherControllers.index);
 routes.post(
@@ -60,5 +62,9 @@ routes.post(
 );
 routes.get("/course/student", courseStudentControllers.index);
 routes.post("/course/:id/student", courseStudentControllers.store);
+
+routes.post("/question", questionControllers.store);
+
+routes.post("/choice/:id", choiceControllers.store);
 
 module.exports = routes;

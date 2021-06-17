@@ -11,7 +11,7 @@ function createConnection(io) {
     console.log(socket.rooms);
 
     socket.on("prepareQuizz", async (quizz) => {
-      const newQuizz = prepareQuizz(quizz);
+      const newQuizz = await prepareQuizz(quizz);
       insertQuestions(newQuizz.id, quizz.questions);
       socket.join(newQuizz.socket_id);
     });
@@ -35,6 +35,9 @@ function createConnection(io) {
       } catch (error) {
         console.log(error);
       }
+    });
+    socket.on("showResult", async (result) => {
+      showResult(result);
     });
   });
 }
@@ -161,6 +164,52 @@ async function answerQuizz(answer) {
 
     await student.addChoice(choice);
     console.log("Escolha registrada");
+  } catch (error) {
+    console.log(error);
+  }
+}
+async function showResult(result) {
+  let quizz = await Quizz.findByPk(result.quizzId);
+  const student = await Student.findOne({
+    where: {
+      user_id: result.userId,
+    },
+  });
+
+  try {
+    if (!student)
+      return res.status(404).send({ error: "Estudante não encontrado!" });
+
+    if (!quizz) return res.status(400).send({ error: "Quizz não encontrada!" });
+
+    let questions = await Quizz.findAll({
+      where: {
+        id: quizz.id,
+      },
+      include: [
+        {
+          association: "Questions",
+          include: [
+            {
+              association: "Choices",
+              attributes: ["id", "correct_option"],
+              where: {
+                correct_option: true,
+              },
+              include: [
+                {
+                  association: "Student",
+                  where: {
+                    student_id: student.id,
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    return questions;
   } catch (error) {
     console.log(error);
   }

@@ -6,6 +6,7 @@ class Choice extends Model {
       {
         description: DataTypes.STRING,
         image: DataTypes.STRING,
+        correct_option: DataTypes.BOOLEAN,
       },
       {
         tableName: "choice",

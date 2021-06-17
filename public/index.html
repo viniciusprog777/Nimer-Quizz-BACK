@@ -11,34 +11,56 @@
     ></script>
   </head>
   <body>
-    <button id="teste">Teste</button>
-    <button id="mensagem">Enviar mensagem</button>
+    <button id="conexao">Conexão</button>
+    <button id="prepararQuizz">Preparar Quizz</button>
+    <button id="iniciarQuizz">Iniciar Quizz</button>
+    <button id="responderQuizz">Responder Quizz</button>
+
     <script type="text/javascript">
       let socket;
 
-      document.querySelector("#teste").addEventListener("click", () => {
+      document.querySelector("#conexao").addEventListener("click", () => {
         if (!socket) {
           socket = new io("http://localhost:3333");
-          // socket.emit("prepareQuizz", {
-          //   userId: 2,
-          //   userLevel: 2,
-          //   title: "Quizz Teste 03",
-          //   classId: 2
-          // });
         }
-
-        socket.on("comecar", (mensagem) => {
-          console.log(mensagem);
+      });
+      document.querySelector("#prepararQuizz").addEventListener("click", () => {
+        if (socket) {
+          socket.emit("prepareQuizz", {
+            userId: 2,
+            userLevel: 2,
+            title: "Quizz Teste",
+            classId: 1,
+            questions: [
+              {
+                id: 1,
+              },
+              {
+                id: 2,
+              },
+            ],
+          });
+        }
+      });
+      document.querySelector("#iniciarQuizz").addEventListener("click", () => {
+        if (socket) {
+          socket.emit("iniciateQuizz", {
+            userId: 2,
+            userLevel: 2,
+            quizzId: 2,
+          });
+        }
+      });
+      document
+        .querySelector("#responderQuizz")
+        .addEventListener("click", () => {
+          if (socket) {
+            socket.emit("answerQuizz", {
+              studentId: 1,
+              choiceId: 5,
+            });
+          }
         });
-      });
-
-      document.querySelector("#mensagem").addEventListener("click", () => {
-        if (!socket) {
-          return;
-        }
-
-        socket.emit("mensagem", "Teste de mensagem");
-      });
     </script>
   </body>
 </html>
