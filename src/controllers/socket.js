@@ -336,6 +336,12 @@ async function nextQuestion(question) {
       user_id: question.userId,
     },
   });
+  try {
+    if (!teacher || quizz.userLevel > 2)
+      return res.status(404).send({ error: "Professor não encontrado!" });
+
+    if (!quizz) return res.status(400).send({ error: "Quizz não encontrado!" });
+  } catch (error) {}
 }
 
 module.exports = { createConnection };
