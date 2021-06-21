@@ -18,6 +18,7 @@
     <button id="entrarQuizz">Entrar Quizz</button>
     <button id="encerrarQuizz">Encerrar Quizz</button>
     <button id="mostrarResultado">Mostrar Resultado</button>
+    <button id="mostrarResultadoTodos">Mostrar Resultado de Todos</button>
 
     <script type="text/javascript">
       let socket;
@@ -60,39 +61,45 @@
           if (socket) {
             socket.emit("answerQuizz", {
               studentId: 1,
-              choiceId: 3,
-              quizzId: 1
-            });
-          }
-        });
-        document
-        .querySelector("#entrarQuizz")
-        .addEventListener("click", () => {
-          if (socket) {
-            socket.emit("enterQuizz", {
-              quizzId: 14,
-              userId: 3,
-              classId: 1
-            });
-          }
-        });
-        document
-        .querySelector("#encerrarQuizz")
-        .addEventListener("click", () => {
-          if (socket) {
-            socket.emit("endQuizz", {
-              userId: 2,
-              userLevel: 2,
+              choiceId: 6,
               quizzId: 1,
             });
           }
         });
-        document
+      document.querySelector("#entrarQuizz").addEventListener("click", () => {
+        if (socket) {
+          socket.emit("enterQuizz", {
+            quizzId: 1,
+            userId: 3,
+            classId: 1,
+          });
+        }
+      });
+      document.querySelector("#encerrarQuizz").addEventListener("click", () => {
+        if (socket) {
+          socket.emit("endQuizz", {
+            userId: 2,
+            userLevel: 2,
+            quizzId: 1,
+          });
+        }
+      });
+      document
         .querySelector("#mostrarResultado")
         .addEventListener("click", () => {
           if (socket) {
             socket.emit("showResult", {
               userId: 3,
+              quizzId: 1,
+            });
+          }
+        });
+      document
+        .querySelector("#mostrarResultadoTodos")
+        .addEventListener("click", () => {
+          if (socket) {
+            socket.emit("showResultAll", {
+              userId: 2,
               quizzId: 1,
             });
           }

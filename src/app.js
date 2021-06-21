@@ -1,5 +1,6 @@
 const express = require("express");
 const socketio = require("socket.io");
+const { errors } = require("celebrate");
 require("./database");
 const http = require("http");
 const path = require("path");
@@ -17,6 +18,8 @@ app.use(express.json());
 app.use(cors());
 
 app.use(routes);
+
+app.use(errors());
 
 const httpServer = http.createServer(app);
 

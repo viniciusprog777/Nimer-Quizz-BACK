@@ -17,7 +17,7 @@ const classesControllers = require("./controllers/classes");
 const courseControllers = require("./controllers/courses");
 const classStudentControllers = require("./controllers/classStudent");
 const courseStudentControllers = require("./controllers/courseStudent");
-const courseTeacherControllers = require("./controllers/courseTeacher")
+const courseTeacherControllers = require("./controllers/courseTeacher");
 
 const routes = express();
 
@@ -31,11 +31,7 @@ routes.get("/institution", institutionControllers.index);
 routes.use(authMiddleware);
 
 routes.get("/teacher", teacherControllers.index);
-routes.post(
-  "/teacher",
-  //teacherValidation.create,
-  teacherControllers.store
-);
+routes.post("/teacher", teacherValidation.create, teacherControllers.store);
 
 routes.get("/student", studentControllers.index);
 routes.get("/student/:id", studentControllers.find);
@@ -64,7 +60,7 @@ routes.post(
 routes.get("/course/student", courseStudentControllers.index);
 routes.post("/course/:id/student", courseStudentControllers.store);
 
-routes.get("/course/:id/teacher", courseTeacherControllers.index);
+routes.post("/course/:id/teacher", courseTeacherControllers.store);
 
 routes.get("/question", questionControllers.index);
 routes.post("/question", questionControllers.store);
