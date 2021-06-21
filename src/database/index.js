@@ -15,10 +15,12 @@ const Theme = require("../models/Theme");
 const User = require("../models/User");
 const Institution = require("../models/Institution");
 const Level = require("../models/Level");
+const Answer = require("../models/Answer");
 
 const conex = new Sequelize(dbConfig.url, dbConfig.config);
 
 Teacher.init(conex);
+Answer.init(conex);
 Student.init(conex);
 Institution.init(conex);
 Course.init(conex);
@@ -35,7 +37,7 @@ Quizz.init(conex);
 Student.associate(conex.models);
 Teacher.associate(conex.models);
 Institution.associate(conex.models);
-Course.associate(conex.models);
+Course.associate(conex.models)
 Class.associate(conex.models);
 Level.associate(conex.models);
 User.associate(conex.models);
@@ -45,11 +47,12 @@ Theme.associate(conex.models);
 Contract.associate(conex.models);
 Question.associate(conex.models);
 Quizz.associate(conex.models);
+Answer.associate(conex.models);
 
-for (let assoc of Object.keys(Question.associations)) {
-  for (let accessor of Object.keys(Question.associations[assoc].accessors)) {
+for (let assoc of Object.keys(Student.associations)) {
+  for (let accessor of Object.keys(Student.associations[assoc].accessors)) {
     console.log(
-      Question.name + "." + Question.associations[assoc].accessors[accessor] + "()"
+      Student.name + "." + Student.associations[assoc].accessors[accessor] + "()"
     );
   }
 }

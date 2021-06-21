@@ -10,13 +10,14 @@ class Choice extends Model {
       },
       {
         tableName: "choice",
-        sequelize,
+        sequelize, 
       }
     );
   }
   static associate(models) {
     this.belongsTo(models.Question, { foreignKey: "question_id" });
     this.belongsToMany(models.Student, { through: "answer" });
+    this.belongsToMany(models.Quizz, { through: "answer" });
   }
 }
 module.exports = Choice;

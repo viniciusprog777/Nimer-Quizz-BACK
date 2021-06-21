@@ -19,6 +19,7 @@ class Student extends Model {
     this.belongsToMany(models.Course, { through: "course_student" });
     this.belongsToMany(models.Achievement, { through: "student_achievement" });
     this.belongsToMany(models.Choice, { through: "answer" });
+    this.belongsToMany(models.Quizz, { through: "answer" });
 
   }
 }

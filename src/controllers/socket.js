@@ -4,6 +4,7 @@ const Student = require("../models/Student");
 const Quizz = require("../models/Quizz");
 const Question = require("../models/Question");
 const Choice = require("../models/Choice");
+const Answer = require("../models/Answer");
 
 function createConnection(io) {
   io.on("connection", async (socket) => {
@@ -14,6 +15,8 @@ function createConnection(io) {
       const newQuizz = await prepareQuizz(quizz);
       insertQuestions(newQuizz.id, quizz.questions);
       socket.join(newQuizz.socket_id);
+      console.log(socket.rooms);
+
     });
     socket.on("iniciateQuizz", async (quizz) => {
       iniciateQuizz(quizz);
@@ -25,17 +28,49 @@ function createConnection(io) {
       answerQuizz(answer);
     });
     socket.on("enterQuizz", async (quizzId) => {
+      const quizz = await Quizz.findByPk(quizzId.quizzId);
+      const student = await Student.findOne({
+        where:{
+          user_id: quizzId.userId
+        },
+        include:[
+          {
+            association: "Classes",
+            where:{
+              id: quizzId.classId
+            }
+          }
+        ]
+      })
+
+      try {
+        if (!quizz)
+         console.log("Quizz não encontrado!" );
+         
+         if (!student) 
+           console.log("Aluno não encontrado!" );
+           
+
+        socket.join(quizz.socket_id);
+        socket.to(quizz.socket_id).emit(`${socket.id} entrou no Quizz`);
+        console.log(socket.rooms.size);
+      } catch (error) {
+        console.log(error);
+      }
+    });
+    socket.on("quitQuizz", async (quizzId) =>{
       const quizz = await Quizz.findByPk(quizzId);
 
       try {
         if (!quizz)
           return res.status(404).send({ error: "Quizz não encontrado!" });
-        socket.join(quizz.socket_id);
-        socket.to(quizz.socket_id).emit(`${socket.id} entrou no Quizz`);
+        
+        socket.to(quizz.socket_id).emit(`${socket.id} saiu do Quizz`);
+        socket.leave(quizz.socket_id);
       } catch (error) {
         console.log(error);
       }
-    });
+    })
     socket.on("showResult", async (result) => {
       showResult(result);
     });
@@ -48,6 +83,14 @@ async function prepareQuizz(quizz) {
     where: {
       user_id: quizz.userId,
     },
+    include:[
+        {
+            association: "Courses",
+            where:{
+                id: classes.course_id
+            }
+        }
+    ]
   });
 
   try {
@@ -153,16 +196,37 @@ async function insertQuestions(idQuizz, questions) {
   }
 }
 async function answerQuizz(answer) {
+  console.log(answer.studentId);
   let choice = await Choice.findByPk(answer.choiceId);
   let student = await Student.findByPk(answer.studentId);
+  let quizz = await Quizz.findByPk(answer.quizzId);
+  let oldAnswer = await Answer.findOne({
+    where:{
+      student_id: answer.studentId,
+      choice_id: answer.choiceId,
+      quizz_id: answer.quizzId,
+    }
+  })
+  
 
   try {
     if (!student)
       return res.status(404).send({ error: "Aluno não encontrado!" });
     if (!choice)
       return res.status(404).send({ error: "Escolha não encontrada!" });
+    if (!quizz)
+      return res.status(404).send({ error: "Quizz não encontrada!" });
+    if (oldAnswer) {
+      return console.log("Erro de conflito!")
+    }
 
-    await student.addChoice(choice);
+    await Answer.create({
+      student_id: answer.studentId,
+      choice_id: answer.choiceId,
+      quizz_id: answer.quizzId,
+    })
+    
+
     console.log("Escolha registrada");
   } catch (error) {
     console.log(error);
@@ -182,33 +246,48 @@ async function showResult(result) {
 
     if (!quizz) return res.status(400).send({ error: "Quizz não encontrada!" });
 
-    let questions = await Quizz.findAll({
-      where: {
-        id: quizz.id,
+    let questions = await Answer.findAll({
+      where:{
+        student_id: student.id,
+        quizz_id: result.quizzId
       },
       include: [
         {
-          association: "Questions",
-          include: [
-            {
-              association: "Choices",
-              attributes: ["id", "correct_option"],
-              where: {
-                correct_option: true,
-              },
-              include: [
-                {
-                  association: "Student",
-                  where: {
-                    student_id: student.id,
-                  },
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    });
+          association: "Choice",
+          attributes: ["id", "correct_option"],
+          where:{
+            correct_option: true
+          }
+        }
+      ]
+    })
+    // let questions = await Quizz.findAll({
+    //   where: {
+    //     id: quizz.id,
+    //   },
+    //   include: [
+    //     {
+    //       association: "Questions",
+    //       include: [
+    //         {
+    //           association: "Choices",
+    //           attributes: ["id", "correct_option"],
+    //           where: {
+    //             correct_option: true,
+    //           },
+    //           // include: [
+    //           //   {
+    //           //     association: "Answer",
+    //           //     where: {
+    //           //       student_id: student.id,
+    //           //     },
+    //           //   },
+    //           // ],
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // });
     return questions;
   } catch (error) {
     console.log(error);

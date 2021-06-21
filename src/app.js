@@ -8,7 +8,6 @@ const cors = require("cors");
 const app = express();
 
 const routes = require("./routes");
-const Question = require("./models/Question");
 const { createConnection } = require("./controllers/socket");
 
 app.use(express.static(path.resolve(__dirname, "..", "public")));

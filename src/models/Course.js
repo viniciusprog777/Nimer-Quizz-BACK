@@ -17,7 +17,9 @@ class Course extends Model {
   static associate(models) {
     this.belongsTo(models.Institution, { foreignKey: "institution_id" });
     this.belongsToMany(models.Student, { through: "course_student" });
+    this.belongsToMany(models.Teacher, {through: "course_teacher"})
     this.hasMany(models.Class, { foreignKey: "course_id" });
+
   }
 }
 module.exports = Course;

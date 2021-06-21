@@ -37,14 +37,40 @@ module.exports = {
         user_id: userId,
       },
     });
+
+    let newStudent;
+    
+    console.log(newStudent)
     try {
       if (!teacher || userLevel > 2)
         return res.status(404).send({ error: "Professor não encontrado!" });
 
       if (!classes)
         return res.status(400).send({ error: "Classe não encontrada!" });
+        
+      // if (!newStudent) 
+      //   return res.status(400).send({ error: "Nenhum Estudante cadastrado no curso!" });
+        
 
-      await classes.addStudents(studentsArr);
+        studentsArr.forEach(async e => {
+
+          let s = await Student.findOne({
+            where:{
+              id: e
+            },
+            include:[
+              {
+                association: "Courses",
+                where:{
+                  id: classes.course_id
+                }
+              }
+            ]
+          })
+    
+          await classes.addStudent(s);
+        });
+
       return res.status(201).send("Alunos Adicionados");
     } catch (error) {
       console.log(error);

@@ -7,7 +7,7 @@ module.exports = {
             const questions = await Question.findAll({
                 include: [
                     {
-                      association: "Choice",
+                      association: "Choices",
                       attributes: ["id", "description", "image", "correct_option"],
                     },
                   ],
@@ -32,7 +32,7 @@ module.exports = {
             if (!teacher || userLevel > 2)
                 return res.status(404).send({ error: "Professor não encontrado!" });
             
-            const question = await Question.create({
+            const question = await teacher.create({
                 title,
                 image
             });

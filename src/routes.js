@@ -17,6 +17,7 @@ const classesControllers = require("./controllers/classes");
 const courseControllers = require("./controllers/courses");
 const classStudentControllers = require("./controllers/classStudent");
 const courseStudentControllers = require("./controllers/courseStudent");
+const courseTeacherControllers = require("./controllers/courseTeacher")
 
 const routes = express();
 
@@ -63,6 +64,9 @@ routes.post(
 routes.get("/course/student", courseStudentControllers.index);
 routes.post("/course/:id/student", courseStudentControllers.store);
 
+routes.get("/course/:id/teacher", courseTeacherControllers.index);
+
+routes.get("/question", questionControllers.index);
 routes.post("/question", questionControllers.store);
 
 routes.post("/choice/:id", choiceControllers.store);

@@ -19,6 +19,7 @@ class Teacher extends Model {
     this.hasMany(models.Class, { foreignKey: "teacher_id" });
     this.hasMany(models.Quizz, { foreignKey: "teacher_id" });
     this.hasMany(models.Question, { foreignKey: "teacher_id" });
+    this.belongsToMany(models.Course, { through: "course_teacher" });
   }
 }
 module.exports = Teacher;
