@@ -19,6 +19,7 @@
     <button id="encerrarQuizz">Encerrar Quizz</button>
     <button id="mostrarResultado">Mostrar Resultado</button>
     <button id="mostrarResultadoTodos">Mostrar Resultado de Todos</button>
+    <button id="proximaQuestao">Proxima Questão</button>
 
     <script type="text/javascript">
       let socket;
@@ -101,6 +102,18 @@
             socket.emit("showResultAll", {
               userId: 2,
               quizzId: 1,
+            });
+          }
+        });
+        document
+        .querySelector("#proximaQuestao")
+        .addEventListener("click", () => {
+          if (socket) {
+            socket.emit("nextQuestion", {
+              userId: 2,
+              quizzId: 1,
+              questionId: 1,
+
             });
           }
         });

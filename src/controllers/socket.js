@@ -5,7 +5,8 @@ const Quizz = require("../models/Quizz");
 const Question = require("../models/Question");
 const Choice = require("../models/Choice");
 const Answer = require("../models/Answer");
-const question = require("./question");
+const { Op } = require("sequelize");
+
 
 function createConnection(io) {
   io.on("connection", async (socket) => {
@@ -337,11 +338,35 @@ async function nextQuestion(question) {
     },
   });
   try {
-    if (!teacher || quizz.userLevel > 2)
+    if (!teacher)
       return res.status(404).send({ error: "Professor não encontrado!" });
 
     if (!quizz) return res.status(400).send({ error: "Quizz não encontrado!" });
-  } catch (error) {}
+
+    let nextQuestion = await Question.findOne({
+      where:{
+        id:{
+          [Op.gt]: question.questionId,
+        }
+      },
+      include: [
+        {
+          association: "Choices",
+        },
+      ],
+      include:[
+        {
+          association: "Quizzs",
+          where:{
+            id: question.quizzId
+          }
+        }
+      ]
+    });
+    return nextQuestion;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 module.exports = { createConnection };

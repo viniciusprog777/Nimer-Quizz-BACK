@@ -49,10 +49,10 @@ Question.associate(conex.models);
 Quizz.associate(conex.models);
 Answer.associate(conex.models);
 
-for (let assoc of Object.keys(Student.associations)) {
-  for (let accessor of Object.keys(Student.associations[assoc].accessors)) {
+for (let assoc of Object.keys(Question.associations)) {
+  for (let accessor of Object.keys(Question.associations[assoc].accessors)) {
     console.log(
-      Student.name + "." + Student.associations[assoc].accessors[accessor] + "()"
+      Question.name + "." + Question.associations[assoc].accessors[accessor] + "()"
     );
   }
 }
