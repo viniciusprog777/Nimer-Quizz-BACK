@@ -23,7 +23,11 @@ app.use(errors());
 
 const httpServer = http.createServer(app);
 
-const io = new socketio.Server(httpServer);
+const io = new socketio.Server(httpServer, {
+  cors: {
+    origin: "http://localhost:3000",
+  },
+});
 
 createConnection(io);
 

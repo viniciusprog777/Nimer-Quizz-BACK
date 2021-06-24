@@ -5,6 +5,7 @@ module.exports = {
   async index(req, res) {
     try {
       const questions = await Question.findAll({
+        attributes: ["id", "title", "image"],
         include: [
           {
             association: "Choices",
