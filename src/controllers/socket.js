@@ -76,7 +76,8 @@ function createConnection(io) {
       showResultAll(result);
     });
     socket.on("nextQuestion", async (question) => {
-      nextQuestion(question);
+      const q = await nextQuestion(question);
+      socket.emit("resNextQuestion", q);
     });
   });
 }
@@ -363,7 +364,8 @@ async function nextQuestion(question) {
         }
       ]
     });
-    return nextQuestion;
+    const choices = await nextQuestion.getChoices();
+    return {nextQuestion,choices};
   } catch (error) {
     console.log(error);
   }
