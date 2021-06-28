@@ -8,6 +8,7 @@ const courseValidation = require("./validators/courseValidation");
 const authMiddleware = require("./middleware/authorization");
 
 const teacherControllers = require("./controllers/teachers");
+const quizzControllers = require("./controllers/quizzes");
 const studentControllers = require("./controllers/students");
 const institutionControllers = require("./controllers/institution");
 const questionControllers = require("./controllers/question");
@@ -40,6 +41,8 @@ routes.post(
   //studentValidation.create,
   studentControllers.store
 );
+
+routes.get("/quizz", quizzControllers.index)
 
 routes.get("/class", classesControllers.index);
 routes.post(

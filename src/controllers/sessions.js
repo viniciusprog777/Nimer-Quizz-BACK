@@ -20,9 +20,11 @@ module.exports = {
         return res.status(403).send({ error: "Usuário e/ou senha inválidos" });
       console.log("1");
       const token = generateToken({
-        userId: user.id,
-        userLevel: user.level_id,
-        userEmail: user.email,
+        user: {
+          userId: user.id,
+          userLevel: user.level_id,
+          userEmail: user.email,
+        },
       });
       console.log(token);
       res.status(201).send({
