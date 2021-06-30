@@ -2,7 +2,7 @@ const Institution = require("../models/Institution");
 const Level = require("../models/Level");
 const Student = require("../models/Student");
 const User = require("../models/User");
-const bcrypt = require("bcryptjs");  
+const bcrypt = require("bcryptjs");
 
 module.exports = {
   async index(req, res) {
@@ -17,7 +17,7 @@ module.exports = {
   },
   async store(req, res) {
     const { name, email, password, dateBirthday } = req.body;
-    const { userId, userLevel } = req;
+    const { userId, userLevel } = req.user;
 
     let user = await User.findOne({
       where: {
@@ -43,13 +43,13 @@ module.exports = {
         name,
         email,
         password: passwordCript,
-        status: 1
+        status: 1,
       });
-      
+
       student = await user.createStudent({
         date_birthday: dateBirthday,
       });
-      
+
       await institution.addStudent(student);
       return res.status(201).send(student);
     } catch (error) {

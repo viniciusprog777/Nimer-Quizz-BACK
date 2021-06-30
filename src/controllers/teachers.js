@@ -2,7 +2,6 @@ const Institution = require("../models/Institution");
 const Teacher = require("../models/Teacher");
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
-const { generateToken } = require("../util");
 const Level = require("../models/Level");
 
 module.exports = {
@@ -18,7 +17,8 @@ module.exports = {
   },
   async store(req, res) {
     const { name, email, password, dateBirthday } = req.body;
-    const { userId, userLevel } = req;
+
+    const { userId, userLevel } = req.user;
 
     let user = await User.findOne({
       where: {
@@ -28,11 +28,10 @@ module.exports = {
     const level = await Level.findByPk(2);
 
     const institution = await Institution.findOne({
-      where:{
-        user_id: userId
-      }
+      where: {
+        user_id: userId,
+      },
     });
-    
 
     if (!institution || userLevel > 1)
       return res.status(404).send({ error: "Instituição não encontrado!" });
@@ -46,9 +45,9 @@ module.exports = {
         name,
         email,
         password: passwordCript,
-        status: 1
+        status: 1,
       });
-      
+
       await user.createTeacher({
         date_birthday: dateBirthday,
       });
@@ -58,10 +57,8 @@ module.exports = {
           user_id: user.id,
         },
       });
-      await institution.addTeacher(teacher);     
-      
+      await institution.addTeacher(teacher);
 
-      
       return res.status(201).send(teacher);
     } catch (error) {
       return res.status(500).send(error);

@@ -1,16 +1,18 @@
 const express = require("express");
 const socketio = require("socket.io");
-const { errors } = require("celebrate");
+require("dotenv").config();
 require("./database");
 const http = require("http");
 const path = require("path");
 
 const cors = require("cors");
+const { errors } = require("celebrate");
+
 const app = express();
 
 const routes = require("./routes");
-const { createConnection } = require("./controllers/socket");
 
+const { createConnection } = require("./controllers/socket");
 app.use(express.static(path.resolve(__dirname, "..", "public")));
 
 app.use(express.json());

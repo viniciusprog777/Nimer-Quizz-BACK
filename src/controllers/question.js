@@ -20,7 +20,7 @@ module.exports = {
     }
   },
   async store(req, res) {
-    const { userId, userLevel } = req;
+    const { userId, userLevel } = req.user;
     const { title, image } = req.body;
 
     const teacher = await Teacher.findOne({

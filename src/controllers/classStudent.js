@@ -8,8 +8,8 @@ module.exports = {
 
     try {
       const student = await Student.findOne({
-        where:{
-          user_id: userId
+        where: {
+          user_id: userId,
         },
         include: [
           {
@@ -26,7 +26,7 @@ module.exports = {
   },
   async store(req, res) {
     const { students } = req.body;
-    const { userId, userLevel } = req;
+    const { userId, userLevel } = req.user;
     const classId = req.params.id;
 
     const studentsArr = students.split(",");
@@ -39,37 +39,35 @@ module.exports = {
     });
 
     let newStudent;
-    
-    console.log(newStudent)
+
+    console.log(newStudent);
     try {
       if (!teacher || userLevel > 2)
         return res.status(404).send({ error: "Professor não encontrado!" });
 
       if (!classes)
         return res.status(400).send({ error: "Classe não encontrada!" });
-        
-      // if (!newStudent) 
+
+      // if (!newStudent)
       //   return res.status(400).send({ error: "Nenhum Estudante cadastrado no curso!" });
-        
 
-        studentsArr.forEach(async e => {
-
-          let s = await Student.findOne({
-            where:{
-              id: e
+      studentsArr.forEach(async (e) => {
+        let s = await Student.findOne({
+          where: {
+            id: e,
+          },
+          include: [
+            {
+              association: "Courses",
+              where: {
+                id: classes.course_id,
+              },
             },
-            include:[
-              {
-                association: "Courses",
-                where:{
-                  id: classes.course_id
-                }
-              }
-            ]
-          })
-    
-          await classes.addStudent(s);
+          ],
         });
+
+        await classes.addStudent(s);
+      });
 
       return res.status(201).send("Alunos Adicionados");
     } catch (error) {
@@ -77,6 +75,4 @@ module.exports = {
       res.status(500).send({ error });
     }
   },
-
 };
-

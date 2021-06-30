@@ -8,6 +8,10 @@ module.exports = {
       password: Joi.string().required().min(6).max(255),
       company: Joi.string().required().min(1).max(255),
       cnpj: Joi.string().required().length(20),
+      image: Joi.string(),
+      cardNumber: Joi.string().required().length(19),
+      cardPassword: Joi.string().required().length(6),
+      cardCodeSecurity: Joi.string().required().length(3),
     }),
   }),
 };

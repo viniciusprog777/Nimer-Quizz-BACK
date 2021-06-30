@@ -14,7 +14,7 @@ module.exports = {
   },
   async store(req, res) {
     const { name, description, image } = req.body;
-    const { userId, userLevel } = req;
+    const { userId, userLevel } = req.user;
 
     let course = await Course.findOne({
       where: {
@@ -22,9 +22,9 @@ module.exports = {
       },
     });
     const institution = await Institution.findOne({
-      where:{
-        user_id: userId
-      }
+      where: {
+        user_id: userId,
+      },
     });
 
     if (!institution || userLevel > 1)
@@ -35,7 +35,7 @@ module.exports = {
       course = await institution.createCourse({
         name,
         description,
-        image
+        image,
       });
 
       return res.status(201).send(course);

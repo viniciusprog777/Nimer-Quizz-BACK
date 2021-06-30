@@ -5,6 +5,7 @@ module.exports = {
     [Segments.BODY]: Joi.object().keys({
       name: Joi.string().required().min(3).max(255),
       description: Joi.string().required().min(1).max(255),
+      image: Joi.string(),
     }),
   }),
 };
