@@ -1,6 +1,7 @@
 const Class = require("../models/Class");
 const Teacher = require("../models/Teacher");
 const Quizz = require("../models/Quizz");
+const { Association } = require("sequelize/types");
 
 module.exports = {
     async index(req, res){
@@ -14,7 +15,13 @@ module.exports = {
             const quizzes = await Quizz.findAll({
                 where:{
                     class_id: classId
-                }
+                },
+                include:[
+                    {
+                        association: "Teacher",
+                        attributes: ["id", "name"]
+                    }
+                ]
             })
             return res.status(201).send(quizzes);
         } catch (error) {
