@@ -18,15 +18,19 @@ function createConnection(io) {
       insertQuestions(newQuizz.id, quizz.questions);
       socket.join(newQuizz.socket_id);
       console.log(socket.rooms);
+
     });
     socket.on("iniciateQuizz", async (quizz) => {
-      iniciateQuizz(quizz);
+      const id = await iniciateQuizz(quizz);
+      socket.to(id).emit("start");
     });
     socket.on("endQuizz", async (quizz) => {
-      endQuizz(quizz);
+      const id = await endQuizz(quizz);
+      socket.to(id).emit("end");
     });
     socket.on("answerQuizz", async (answer) => {
-      answerQuizz(answer);
+      const id = await answerQuizz(answer);
+      socket.to(id).emit("answer");
     });
     socket.on("enterQuizz", async (quizzId) => {
       const quizz = await Quizz.findByPk(quizzId.quizzId);
@@ -52,7 +56,7 @@ function createConnection(io) {
         socket.join(quizz.socket_id);
         socket.to(quizz.socket_id).emit(`${socket.id} entrou no Quizz`);
         console.log(socket.rooms.size);
-      } catch (error) {
+      } catch (error) { 
         console.log(error);
       }
     });
@@ -70,15 +74,24 @@ function createConnection(io) {
       }
     });
     socket.on("showResult", async (result) => {
-      showResult(result);
+      const questions = await showResult(result);
+      return questions;
     });
     socket.on("showResultAll", async (result) => {
-      showResultAll(result);
+      const questions = await showResultAll(result);
+      return questions;
     });
     socket.on("nextQuestion", async (question) => {
       const q = await nextQuestion(question);
       socket.emit("resNextQuestion", q);
     });
+    socket.on("responsesQuant", async (obj) =>{
+      const cont = await responsesQuant(obj);
+      if ((socket.rooms.size - 1) === cont.length()) 
+        return true
+      else
+        return false
+    })
   });
 }
 
@@ -141,6 +154,7 @@ async function iniciateQuizz(upQuizz) {
     quizz.save();
 
     console.log("Quizz Atualizado!");
+    return quizz.socket_id;
   } catch (error) {
     console.log(error);
   }
@@ -163,8 +177,9 @@ async function endQuizz(upQuizz) {
     quizz.status_quizz = "Finalizado";
 
     quizz.save();
-
+    
     console.log("Quizz Finalizado!");
+    return quizz.socket_id;
   } catch (error) {
     console.log(error);
   }
@@ -230,6 +245,7 @@ async function answerQuizz(answer) {
     });
 
     console.log("Escolha registrada");
+    return quizz.socket_id;
   } catch (error) {
     console.log(error);
   }
@@ -366,6 +382,28 @@ async function nextQuestion(question) {
     });
     const choices = await nextQuestion.getChoices();
     return {nextQuestion,choices};
+  } catch (error) {
+    console.log(error);
+  }
+}
+async function responsesQuant(obj) {
+  let quizz = await Quizz.findByPk(obj.quizzId);
+
+  let choice = await Choice.findByPk(obj.choiceId);
+
+  try {
+    if (!choice)
+      return res.status(404).send({ error: "Resposta não encontrada!" });
+
+    if (!quizz) return res.status(400).send({ error: "Quizz não encontrado!" });
+
+    const cont = await Answer.findAll({
+      where:{
+        choice_id: obj.choiceId,
+        quizz_id: obj.quizzId
+      }
+    })
+    return cont 
   } catch (error) {
     console.log(error);
   }

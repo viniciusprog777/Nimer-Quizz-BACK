@@ -3,7 +3,7 @@ const Class = require("../models/Class");
 
 module.exports = {
   async index(req, res) {
-    const { userId } = req;
+    const { userId } = req.user;
 
     let teacher = await Teacher.findOne({
       where: {

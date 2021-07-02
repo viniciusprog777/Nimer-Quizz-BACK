@@ -4,7 +4,7 @@ const Student = require("../models/Student");
 
 module.exports = {
   async index(req, res) {
-    const { userId } = req;
+    const { userId } = req.user;
 
     try {
       const student = await Student.findOne({

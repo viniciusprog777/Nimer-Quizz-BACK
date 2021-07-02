@@ -1,10 +1,16 @@
 const express = require("express");
 
+const Multer = require("multer");
+
+const multer = Multer();
+
 const studentValidation = require("./validators/studentValidation");
 const teacherValidation = require("./validators/teacherValidation");
 const institutionValidation = require("./validators/instituionValidation");
 const classesValidation = require("./validators/classValidation");
 const courseValidation = require("./validators/courseValidation");
+const uploadSingleImage = require("./middleware/uploadSingleImage");
+const uploadFirebase = require("./services/uploadFirebase");
 const authMiddleware = require("./middleware/authorization");
 
 const teacherControllers = require("./controllers/teachers");
