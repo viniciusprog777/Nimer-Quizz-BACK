@@ -5,7 +5,7 @@ const Quizz = require("../models/Quizz");
 const Question = require("../models/Question");
 const Choice = require("../models/Choice");
 const Answer = require("../models/Answer");
-const { Op } = require("sequelize");
+const { Op, where } = require("sequelize");
 
 
 function createConnection(io) {
@@ -216,13 +216,17 @@ async function insertQuestions(idQuizz, questions) {
   }
 }
 async function answerQuizz(answer) {
-  console.log(answer.studentId);
+  console.log(answer.userId);
   let choice = await Choice.findByPk(answer.choiceId);
-  let student = await Student.findByPk(answer.studentId);
+  let student = await Student.findOne({
+    where:{
+      user_id:answer.userId
+    }
+    });
   let quizz = await Quizz.findByPk(answer.quizzId);
   let oldAnswer = await Answer.findOne({
     where: {
-      student_id: answer.studentId,
+      student_id: student.id,
       choice_id: answer.choiceId,
       quizz_id: answer.quizzId,
     },
@@ -239,7 +243,7 @@ async function answerQuizz(answer) {
     }
 
     await Answer.create({
-      student_id: answer.studentId,
+      student_id: student.id,
       choice_id: answer.choiceId,
       quizz_id: answer.quizzId,
     });
@@ -399,9 +403,19 @@ async function responsesQuant(obj) {
 
     const cont = await Answer.findAll({
       where:{
-        choice_id: obj.choiceId,
         quizz_id: obj.quizzId
-      }
+      },
+      include: [
+        {
+          association: "Choice",
+          where:{
+            question_id: choice.question_id
+          },
+          attributes:[],
+          
+          
+        }
+      ]
     })
     return cont 
   } catch (error) {

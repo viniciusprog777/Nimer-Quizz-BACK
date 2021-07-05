@@ -17,6 +17,7 @@ const teacherControllers = require("./controllers/teachers");
 const quizzControllers = require("./controllers/quizzes");
 const studentControllers = require("./controllers/students");
 const institutionControllers = require("./controllers/institution");
+const imageControllers = require("./controllers/image")
 const questionControllers = require("./controllers/question");
 const choiceControllers = require("./controllers/choice");
 const sessionsControllers = require("./controllers/sessions");
@@ -26,9 +27,11 @@ const classStudentControllers = require("./controllers/classStudent");
 const classTeacherControllers = require("./controllers/classTeacher");
 const courseStudentControllers = require("./controllers/courseStudent");
 const courseTeacherControllers = require("./controllers/courseTeacher");
+const testeControllers = require("./controllers/teste");
 
 const routes = express();
 
+routes.get("/teste", testeControllers.index)
 routes.post("/sessions", sessionsControllers.store);
 routes.post(
   "/institution",
@@ -36,6 +39,7 @@ routes.post(
   institutionControllers.store
 );
 routes.get("/institution", institutionControllers.index);
+
 routes.use(authMiddleware);
 
 routes.get("/teacher", teacherControllers.index);
@@ -45,7 +49,7 @@ routes.get("/student", studentControllers.index);
 routes.get("/student/:id", studentControllers.find);
 routes.post("/student", studentValidation.create, studentControllers.store);
 
-routes.get("/quizz", quizzControllers.index);
+routes.get("/quizz/:id", quizzControllers.index);
 
 routes.get("/class", classesControllers.index);
 routes.post("/class/:id", classesValidation.create, classesControllers.store);
@@ -57,7 +61,6 @@ routes.get("/course", courseControllers.index);
 routes.post("/course", courseValidation.create, courseControllers.store);
 routes.get("/course/student", courseStudentControllers.index);
 routes.post("/course/:id/student", courseStudentControllers.store);
-
 routes.post("/course/teacher", courseTeacherControllers.index);
 routes.post("/course/:id/teacher", courseTeacherControllers.store);
 routes.post("/class/teacher", classTeacherControllers.index);
@@ -65,6 +68,9 @@ routes.post("/class/teacher", classTeacherControllers.index);
 routes.get("/question", questionControllers.index);
 routes.post("/question", questionControllers.store);
 
+
 routes.post("/choice/:id", choiceControllers.store);
+
+routes.post("image", uploadSingleImage, uploadFirebase, imageControllers.store)
 
 module.exports = routes;

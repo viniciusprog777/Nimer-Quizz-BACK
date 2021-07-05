@@ -16,12 +16,6 @@ module.exports = {
         where: {
           class_id: classId,
         },
-        include: [
-          {
-            association: "Teacher",
-            attributes: ["id", "name"],
-          },
-        ],
       });
       return res.status(201).send(quizzes);
     } catch (error) {
