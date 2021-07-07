@@ -83,7 +83,13 @@ function createConnection(io) {
     });
     socket.on("nextQuestion", async (question) => {
       const q = await nextQuestion(question);
-      socket.emit("resNextQuestion", q);
+      if (!q) {
+        socket.to(q.socket).emit("resNoQuestion");
+      }
+      if (q) {
+        socket.to(q.socket).emit("resNextQuestion", q);
+        socket.to(socket.id).emit("resNextQuestion", q);
+      }
     });
     socket.on("responsesQuant", async (obj) =>{
       const cont = await responsesQuant(obj);
@@ -364,6 +370,8 @@ async function nextQuestion(question) {
 
     if (!quizz) return res.status(400).send({ error: "Quizz não encontrado!" });
 
+    console.log(question)
+
     let nextQuestion = await Question.findOne({
       where:{
         id:{
@@ -384,8 +392,12 @@ async function nextQuestion(question) {
         }
       ]
     });
+    console.log(nextQuestion)
+    if (!nextQuestion) {
+      return false
+    }
     const choices = await nextQuestion.getChoices();
-    return {nextQuestion,choices};
+    return {nextQuestion,choices, socket: quizz.socket_id};
   } catch (error) {
     console.log(error);
   }
