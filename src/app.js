@@ -10,6 +10,8 @@ const { errors } = require("celebrate");
 
 const app = express();
 
+app.use(cors());
+
 const routes = require("./routes");
 
 const { createConnection } = require("./controllers/socket");
@@ -17,7 +19,6 @@ app.use(express.static(path.resolve(__dirname, "..", "public")));
 
 app.use(express.json());
 
-app.use(cors());
 
 app.use(routes);
 
