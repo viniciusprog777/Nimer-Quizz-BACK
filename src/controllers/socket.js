@@ -97,6 +97,10 @@ function createConnection(io) {
         return true
       else
         return false
+    });
+    socket.on("fakeResult", async (quizzId) =>{
+      const quizz = await Quizz.findByPk(quizzId);
+      socket.to(quizz.socket_id).emit("fake")
     })
   });
 }

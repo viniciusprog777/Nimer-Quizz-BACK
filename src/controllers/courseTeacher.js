@@ -4,7 +4,7 @@ const Institution = require("../models/Institution");
 
 module.exports = {
   async index(req, res) {
-    const { userId } = req;
+    const { userId } = req.user;
 
     const teacher = await Teacher.findOne({
       where: {
@@ -13,12 +13,13 @@ module.exports = {
     });
 
     try {
-      if (!teacher)
+      if (!teacher){
         return res.status(404).send({ error: "Instituição não encontrado!" });
+      }
       const courses = await Course.findAll({
         include: [
           {
-            association: "Teacher",
+            association: "Teachers",
             where: {
               id: teacher.id,
             },
@@ -28,7 +29,10 @@ module.exports = {
         ],
       });
       return res.status(201).send(courses);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error)
+      return res.status(500).send(error);
+    }
   },
 
   async store(req, res) {

@@ -4,6 +4,7 @@ const Class = require("../models/Class");
 module.exports = {
   async index(req, res) {
     const { userId } = req.user;
+    const courseId = req.params.id;
 
     let teacher = await Teacher.findOne({
       where: {
@@ -19,6 +20,13 @@ module.exports = {
         where: {
           teacher_id: teacher.id,
         },
+        include:[{
+          association: "Course",
+          where:{
+            id: courseId
+          },
+          attributes: []
+        }]
       });
       return res.status(201).send(classes);
     } catch (error) {

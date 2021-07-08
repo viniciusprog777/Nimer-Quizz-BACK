@@ -4,22 +4,35 @@ const Teacher = require("../models/Teacher");
 
 module.exports = {
   async index(req, res) {
-    const { userId } = req;
+    const { userId } = req.user;
+    const courseId = req.params.id;
+
+    const student = await Student.findOne({
+      where: {
+        user_id: userId,
+      },
+    });
 
     try {
-      const student = await Student.findOne({
-        where: {
-          user_id: userId,
-        },
-        include: [
-          {
-            association: "Classes",
-            attributes: ["id", "name"],
+      const classes = await Class.findAll({
+        include:[{
+          association: "Students",
+          where:{
+            student_id: student.id
           },
-        ],
+          attributes: [],
+          through: { attributes: [] },
+        }],
+        include:[{
+          association: "Course",
+          where:{
+            id: courseId
+          },
+          attributes: []
+        }]
       });
 
-      res.send(student);
+      res.send(classes);
     } catch (error) {
       console.log(error);
     }

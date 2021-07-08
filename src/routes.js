@@ -55,15 +55,15 @@ routes.get("/class", classesControllers.index);
 routes.post("/class/:id", classesValidation.create, classesControllers.store);
 
 routes.post("/class/:id/student", classStudentControllers.store);
-routes.get("/class/student", classStudentControllers.index);
+routes.get("/class/:id/student", classStudentControllers.index);
 
 routes.get("/course", courseControllers.index);
 routes.post("/course", courseValidation.create, courseControllers.store);
 routes.get("/course/student", courseStudentControllers.index);
 routes.post("/course/:id/student", courseStudentControllers.store);
-routes.post("/course/teacher", courseTeacherControllers.index);
+routes.get("/course/teacher", courseTeacherControllers.index);
 routes.post("/course/:id/teacher", courseTeacherControllers.store);
-routes.post("/class/teacher", classTeacherControllers.index);
+routes.get("/class/:id/teacher", classTeacherControllers.index);
 
 routes.get("/question", questionControllers.index);
 routes.post("/question", questionControllers.store);

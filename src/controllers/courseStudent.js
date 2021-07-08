@@ -6,20 +6,27 @@ module.exports = {
   async index(req, res) {
     const { userId } = req.user;
 
+    const student = await Student.findOne({
+      where: {
+        user_id: userId,
+      },
+    });
+
     try {
-      const student = await Student.findOne({
-        where: {
-          user_id: userId,
-        },
+      const courses = await Course.findAll({
         include: [
           {
-            association: "Courses",
-            attributes: ["id", "name"],
+            association: "Students",
+            where: {
+              id: student.id,
+            },
+            attributes: [],
+            through: { attributes: [] },
           },
         ],
       });
 
-      res.send(student);
+      return res.send(courses);
     } catch (error) {
       console.log(error);
     }
